@@ -32,7 +32,7 @@
         }
 
         .menu-container {
-            display: none; /* Inicialmente oculto */
+            display: none;
             justify-content: space-around;
             width: 100%;
             box-sizing: border-box;
@@ -161,13 +161,13 @@
         <button onclick="login()">Login</button>
     </div>
 
-    <div class="menu-container" id="menuContainer">
+    <div class="menu-container" id="menuContainer" style="display: none;">
         <a href="#" onclick="showPage('adicionar')">Adicionar Produto</a>
         <a href="#" onclick="showPage('remover')">Remover Produto</a>
         <a href="#" onclick="showPage('estoque')">Ver Estoque Completo</a>
         <a href="#" onclick="showPage('historico')">Ver Histórico de Login</a>
         <a href="#" onclick="showPage('suporte')">Suporte</a>
-        <a href="#" onclick="logout()">Logout</a>
+        <a href="#" onclick="confirmLogout()">Logout</a>
     </div>
 
     <div class="container" id="mainContainer" style="display: none;">
@@ -220,7 +220,7 @@
                 isLoggedIn = true;
                 currentUser = username;
                 document.getElementById('loginContainer').style.display = 'none';
-                document.getElementById('menuContainer').style.display = 'flex'; // Exibir o menu após o login
+                document.getElementById('menuContainer').style.display = 'flex';
                 document.getElementById('mainContainer').style.display = 'block';
                 showPage('adicionar');
                 document.getElementById('loggedInUser').innerText = currentUser;
@@ -231,9 +231,18 @@
             }
         }
 
+        function confirmLogout() {
+            var confirmLogout = confirm('Deseja realmente sair?');
+            if (confirmLogout) {
+                logout();
+            }
+        }
+
         function logout() {
             isLoggedIn = false;
             currentUser = '';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
             document.getElementById('loginContainer').style.display = 'block';
             document.getElementById('menuContainer').style.display = 'none';
             document.getElementById('mainContainer').style.display = 'none';
