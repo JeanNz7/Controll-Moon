@@ -6,10 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controll-Moon</title>
     <style>
-        /* Estilos CSS */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f8ff; /* Azure - Um tom suave de azul */
+            background-color: #f0f8ff;
             margin: 0;
             padding: 0;
             display: flex;
@@ -18,13 +17,14 @@
         }
 
         header {
-            background-color: #1e90ff; /* Dodger Blue - Azul mais vibrante para o cabeçalho */
+            background-color: #1e90ff;
             color: #fff;
             text-align: center;
             padding: 20px 0;
             border-radius: 5px 5px 0 0;
             width: 100%;
             box-sizing: border-box;
+            margin-bottom: 20px;
         }
 
         header h1 {
@@ -32,14 +32,17 @@
         }
 
         .menu-container {
-            display: flex;
+            display: none; /* Inicialmente oculto */
             justify-content: space-around;
             width: 100%;
             box-sizing: border-box;
-            background-color: #4682b4; /* Steel Blue - Azul mais escuro para o menu */
+            background-color: #4682b4;
             padding: 10px;
             border-radius: 0 0 5px 5px;
             margin-top: 20px;
+            margin-bottom: 20px;
+            z-index: 1;
+            position: relative;
         }
 
         .menu-container a {
@@ -57,14 +60,14 @@
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-top: 110px;
+            margin-top: 20px;
             box-sizing: border-box;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 0;
         }
 
-        .menu-container {
-            display: none;
-        }
-
+        .login-container h2,
         h2 {
             color: #333;
             text-align: center;
@@ -86,7 +89,7 @@
         }
 
         button {
-            background-color: #1e90ff; /* Dodger Blue - Azul mais vibrante para os botões */
+            background-color: #1e90ff;
             color: #fff;
             padding: 10px;
             border: none;
@@ -97,15 +100,48 @@
         }
 
         button:hover {
-            background-color: #4682b4; /* Steel Blue - Alteração de cor ao passar o mouse */
+            background-color: #4682b4;
         }
 
         .estoque-item {
             margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
 
         #historicoLogin li {
             margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .support-container {
+            max-width: 600px;
+            width: 100%;
+            background-color: #f0f8ff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            box-sizing: border-box;
+        }
+
+        .contact-button {
+            background-color: #1e90ff;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .contact-button:hover {
+            background-color: #4682b4;
         }
     </style>
 </head>
@@ -130,12 +166,12 @@
         <a href="#" onclick="showPage('remover')">Remover Produto</a>
         <a href="#" onclick="showPage('estoque')">Ver Estoque Completo</a>
         <a href="#" onclick="showPage('historico')">Ver Histórico de Login</a>
+        <a href="#" onclick="showPage('suporte')">Suporte</a>
         <a href="#" onclick="logout()">Logout</a>
     </div>
 
     <div class="container" id="mainContainer" style="display: none;">
         <div class="adicionar-page" style="display: none;">
-            <!-- Conteúdo da página de adicionar produto -->
             <h2>Adicionar Produto</h2>
             <label for="nome">Nome do Produto:</label>
             <input id="nome" type="text" placeholder="Nome do Produto" autocomplete="off">
@@ -145,7 +181,6 @@
         </div>
 
         <div class="remover-page" style="display: none;">
-            <!-- Conteúdo da página de remover produto -->
             <h2>Remover Produto</h2>
             <label for="nomeRemover">Nome do Produto:</label>
             <input id="nomeRemover" type="text" placeholder="Nome do Produto" autocomplete="off">
@@ -155,15 +190,19 @@
         </div>
 
         <div class="estoque-page" style="display: none;">
-            <!-- Conteúdo da página de estoque -->
             <h2>Estoque Completo</h2>
             <div id="estoque"></div>
         </div>
 
         <div class="historico-page" style="display: none;">
-            <!-- Conteúdo da página de histórico de login -->
             <h2>Histórico de Login</h2>
             <ul id="historicoLogin"></ul>
+        </div>
+
+        <div class="support-page" style="display: none;">
+            <h2>Suporte</h2>
+            <p>Entre em contato conosco se precisar de ajuda ou tiver alguma dúvida.</p>
+            <button class="contact-button" onclick="window.location.href='mailto:BlueMoon@gmail.com'">Contate-nos</button>
         </div>
     </div>
 
@@ -177,17 +216,15 @@
             var username = document.getElementById('username').value;
             var password = document.getElementById('password').value;
 
-            // Simulando um login bem-sucedido (verifique suas credenciais aqui)
             if (username !== '' && password !== '') {
                 isLoggedIn = true;
-                currentUser = username; // Salva o nome do usuário atual
+                currentUser = username;
                 document.getElementById('loginContainer').style.display = 'none';
-                document.getElementById('menuContainer').style.display = 'flex';
+                document.getElementById('menuContainer').style.display = 'flex'; // Exibir o menu após o login
                 document.getElementById('mainContainer').style.display = 'block';
                 showPage('adicionar');
                 document.getElementById('loggedInUser').innerText = currentUser;
 
-                // Registro de histórico de login (simulação)
                 registrarHistoricoLogin('Login bem-sucedido');
             } else {
                 alert('Usuário ou senha inválidos. Tente novamente.');
@@ -201,12 +238,10 @@
             document.getElementById('menuContainer').style.display = 'none';
             document.getElementById('mainContainer').style.display = 'none';
 
-            // Registro de histórico de logout (simulação)
             registrarHistoricoLogin('Logout');
         }
 
         function showPage(page) {
-            // Ocultar todas as páginas
             document.querySelectorAll('.container > div').forEach(function (div) {
                 div.style.display = 'none';
             });
@@ -226,6 +261,9 @@
                     document.querySelector('.historico-page').style.display = 'block';
                     exibirHistoricoLogin();
                     break;
+                case 'suporte':
+                    document.querySelector('.support-page').style.display = 'block';
+                    break;
                 default:
                     break;
             }
@@ -234,19 +272,14 @@
         function adicionarProduto() {
             var nome = document.getElementById('nome').value;
             var quantidade = document.getElementById('quantidade').value;
-            var imagem = ''; // Inicializa com uma string vazia para o caminho da imagem
+            var imagem = '';
 
-            // Verifica se o nome e a quantidade são válidos
             if (nome.trim() !== '' && quantidade.trim() !== '' && quantidade >= 0) {
                 for (var i = 0; i < estoque.length; i++) {
                     if (estoque[i].nome === nome) {
                         estoque[i].quantidade += Number(quantidade);
                         atualizarEstoque();
-
-                        // Adiciona a ação ao histórico
                         registrarHistoricoLogin('Adicionou produto', nome, quantidade);
-
-                        // Salva o estoque no armazenamento local
                         salvarEstoqueNoLocalStorage();
                         return;
                     }
@@ -254,11 +287,7 @@
 
                 estoque.push({ nome: nome, quantidade: Number(quantidade), imagem: imagem });
                 atualizarEstoque();
-
-                // Adiciona a ação ao histórico
                 registrarHistoricoLogin('Adicionou produto', nome, quantidade);
-
-                // Salva o estoque no armazenamento local
                 salvarEstoqueNoLocalStorage();
             } else {
                 alert('Por favor, preencha o nome e a quantidade corretamente.');
@@ -269,7 +298,6 @@
             var nome = document.getElementById('nomeRemover').value;
             var quantidade = document.getElementById('quantidadeRemover').value;
 
-            // Verifica se o nome e a quantidade são válidos
             if (nome.trim() !== '' && quantidade.trim() !== '' && quantidade >= 0) {
                 for (var i = 0; i < estoque.length; i++) {
                     if (estoque[i].nome === nome) {
@@ -278,11 +306,7 @@
                             estoque.splice(i, 1);
                         }
                         atualizarEstoque();
-
-                        // Adiciona a ação ao histórico
                         registrarHistoricoLogin('Removeu produto', nome, quantidade);
-
-                        // Salva o estoque no armazenamento local
                         salvarEstoqueNoLocalStorage();
                         return;
                     }
@@ -324,10 +348,8 @@
         }
 
         function registrarHistoricoLogin(acao, produto, quantidade) {
-            // Simulação do registro de histórico com data/hora atual (ajuste conforme necessário)
             var dataHora = new Date().toLocaleString();
 
-            // Adiciona o novo registro ao histórico
             historicoLogin.push({
                 usuario: currentUser,
                 horario: dataHora,
@@ -336,7 +358,6 @@
                 quantidade: quantidade || ''
             });
 
-            // Salva o histórico de login no armazenamento local
             salvarHistoricoLoginNoLocalStorage();
         }
 
